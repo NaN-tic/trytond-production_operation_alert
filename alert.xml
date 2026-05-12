@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="production_operation_alert_view_list">
+            <field name="model">production.operation.alert</field>
+            <field name="type">tree</field>
+            <field name="name">operation_alert_list</field>
+        </record>
+        <record model="ir.ui.view" id="production_operation_alert_view_form">
+            <field name="model">production.operation.alert</field>
+            <field name="type">form</field>
+            <field name="name">operation_alert_form</field>
+        </record>
+
+        <record model="ir.action.act_window"
+            id="act_production_operation_alert_list">
+            <field name="name">Operation Alerts</field>
+            <field name="res_model">production.operation.alert</field>
+        </record>
+        <record model="ir.action.act_window.view"
+            id="act_production_operation_alert_list_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="production_operation_alert_view_list"/>
+            <field name="act_window" ref="act_production_operation_alert_list"/>
+        </record>
+        <record model="ir.action.act_window.view"
+            id="act_production_operation_alert_list_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="production_operation_alert_view_form"/>
+            <field name="act_window" ref="act_production_operation_alert_list"/>
+        </record>
+        <menuitem
+            parent="production.menu_configuration"
+            action="act_production_operation_alert_list"
+            sequence="30"
+            id="menu_production_operation_alert_list"/>
+
+        <record model="ir.model.access" id="access_production_operation_alert">
+            <field name="model">production.operation.alert</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+            id="access_production_operation_alert_group_production">
+            <field name="model">production.operation.alert</field>
+            <field name="group" ref="production.group_production"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.ui.view" id="production_work_view_form">
+            <field name="model">production.work</field>
+            <field name="inherit" ref="production_work.work_view_form"/>
+            <field name="name">work_form</field>
+        </record>
+        <record model="ir.ui.view" id="production_work_cycle_view_form">
+            <field name="model">production.work.cycle</field>
+            <field name="inherit" ref="production_work.work_cycle_view_form"/>
+            <field name="name">work_cycle_form</field>
+        </record>
+        <record model="ir.ui.view" id="production_work_cycle_view_list">
+            <field name="model">production.work.cycle</field>
+            <field name="inherit" ref="production_work.work_cycle_view_list"/>
+            <field name="name">work_cycle_list</field>
+        </record>
+
+        <record model="ir.cron" id="cron_update_work_cycle_alert_state">
+            <field name="method">production.work.cycle|update_alert_state_cron</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+        </record>
+    </data>
+</tryton>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<tree>
+    <field name="line"/>
+    <field name="work_center"/>
+    <field name="product"/>
+    <field name="operation"/>
+    <field name="type"/>
+    <field name="time"/>
+    <field name="state"/>
+</tree>

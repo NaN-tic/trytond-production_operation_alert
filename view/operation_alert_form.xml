@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<form>
+    <label name="line"/>
+    <field name="line"/>
+    <label name="work_center"/>
+    <field name="work_center"/>
+    <label name="product"/>
+    <field name="product"/>
+    <label name="operation"/>
+    <field name="operation"/>
+    <label name="type"/>
+    <field name="type"/>
+    <label name="time"/>
+    <field name="time"/>
+    <label name="state"/>
+    <field name="state"/>
+</form>
