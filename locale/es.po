@@ -1,0 +1,130 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:production.operation.alert,field:"
+msgid "Field"
+msgstr "Campo"
+
+msgctxt "field:production.operation.alert,line:"
+msgid "Line"
+msgstr "Línea"
+
+msgctxt "field:production.operation.alert,model:"
+msgid "Model"
+msgstr "Modelo"
+
+msgctxt "field:production.operation.alert,operation:"
+msgid "Operation"
+msgstr "Operación"
+
+msgctxt "field:production.operation.alert,product:"
+msgid "Product"
+msgstr "Producto"
+
+msgctxt "field:production.operation.alert,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:production.operation.alert,time:"
+msgid "Time"
+msgstr "Tiempo"
+
+msgctxt "field:production.operation.alert,type:"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "field:production.operation.alert,work_center:"
+msgid "Work Center"
+msgstr "Centro de trabajo"
+
+msgctxt "field:production.work,alert_state:"
+msgid "Alert State"
+msgstr "Estado de alerta"
+
+msgctxt "field:production.work,alerts:"
+msgid "Alerts"
+msgstr "Alertas"
+
+msgctxt "field:production.work.cycle,alert_state:"
+msgid "Alert State"
+msgstr "Estado de alerta"
+
+msgctxt "field:production.work.cycle,run_date:"
+msgid "Run Date"
+msgstr "Fecha de inicio"
+
+msgctxt "help:production.operation.alert,field:"
+msgid "Date or datetime field used as the start for the alert calculation."
+msgstr "Campo de fecha o fecha y hora usado como inicio para el cálculo de la alerta."
+
+msgctxt "help:production.operation.alert,model:"
+msgid "Model used to get the date field for the alert calculation."
+msgstr "Modelo usado para obtener el campo de fecha para el cálculo de la alerta."
+
+msgctxt "help:production.operation.alert,state:"
+msgid "State to set on the work cycle when this alert is triggered."
+msgstr "Estado a establecer en el ciclo de trabajo cuando se dispara esta alerta."
+
+msgctxt "help:production.operation.alert,time:"
+msgid "Time in minutes before the alert is triggered."
+msgstr "Tiempo en minutos antes de que se dispare la alerta."
+
+msgctxt "model:ir.action,name:act_production_operation_alert_list"
+msgid "Operation Alerts"
+msgstr "Alertas de operación"
+
+msgctxt "model:ir.cron,name:cron_update_work_cycle_alert_state"
+msgid "Update Work Cycle Alert State"
+msgstr "Actualizar estado de alerta del ciclo de trabajo"
+
+msgctxt "model:ir.ui.menu,name:menu_production_operation_alert_list"
+msgid "Operation Alerts"
+msgstr "Alertas de operación"
+
+msgctxt "model:production.operation.alert,name:"
+msgid "Operation Alert"
+msgstr "Alerta de operación"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Update Work Cycle Alert State"
+msgstr "Actualizar estado de alerta del ciclo de trabajo"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "Danger"
+msgstr "Peligro"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "OK"
+msgstr "Correcto"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "Warning"
+msgstr "Aviso"
+
+msgctxt "selection:production.operation.alert,type:"
+msgid "Time"
+msgstr "Tiempo"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "Danger"
+msgstr "Peligro"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "OK"
+msgstr "Correcto"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "Warning"
+msgstr "Aviso"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "Danger"
+msgstr "Peligro"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "OK"
+msgstr "Correcto"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "Warning"
+msgstr "Aviso"

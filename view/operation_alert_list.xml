@@ -4,6 +4,8 @@
     <field name="work_center"/>
     <field name="product"/>
     <field name="operation"/>
+    <field name="model"/>
+    <field name="field"/>
     <field name="type"/>
     <field name="time"/>
     <field name="state"/>
