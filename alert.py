@@ -30,6 +30,25 @@ class OperationAlert(ModelSQL, ModelView):
     operation = fields.Many2One(
         'production.routing.operation', 'Operation', required=True,
         ondelete='RESTRICT')
+    model = fields.Many2One(
+        'ir.model', 'Model', domain=[
+            ('model', 'in', [
+                    'production.work.cycle',
+                    'production.work',
+                    'production',
+                    ]),
+            ],
+        ondelete='RESTRICT',
+        help='Model used to get the date field for the alert calculation.')
+    field = fields.Many2One(
+        'ir.model.field', 'Field', domain=[
+            ('model_ref', '=', Eval('model', -1)),
+            ('ttype', 'in', ['date', 'datetime']),
+            ],
+        depends=['model'],
+        ondelete='RESTRICT',
+        help=('Date or datetime field used as the start for the alert '
+            'calculation.'))
     type = fields.Selection([
             ('time', 'Time'),
             ], 'Type', required=True, sort=False)
@@ -54,6 +73,11 @@ class OperationAlert(ModelSQL, ModelView):
     @staticmethod
     def default_state():
         return 'warning'
+
+    @fields.depends('model', 'field')
+    def on_change_model(self):
+        if self.field and self.model and self.field.model_ref != self.model:
+            self.field = None
 
 
 class Work(metaclass=PoolMeta):
@@ -143,6 +167,33 @@ class WorkCycle(metaclass=PoolMeta):
                 ])
 
     @classmethod
+    def get_alert_record(cls, cycle, alert):
+        if not alert.model:
+            return cycle
+        model_name = alert.model.model
+        if model_name == 'production.work.cycle':
+            return cycle
+        if model_name == 'production.work':
+            return cycle.work
+        if model_name == 'production':
+            return cycle.work.production if cycle.work else None
+        return None
+
+    @classmethod
+    def get_alert_start(cls, cycle, alert):
+        if alert.field:
+            record = cls.get_alert_record(cycle, alert)
+            if record:
+                value = getattr(record, alert.field.name, None)
+                if value:
+                    if isinstance(value, datetime.date) and not isinstance(
+                            value, datetime.datetime):
+                        return datetime.datetime.combine(
+                            value, datetime.time.min)
+                    return value
+        return cycle.run_date or cycle.write_date or cycle.create_date
+
+    @classmethod
     def compute_alert_state(cls, cycle, now=None):
         if now is None:
             now = datetime.datetime.now()
@@ -150,11 +201,10 @@ class WorkCycle(metaclass=PoolMeta):
             return 'ok'
 
         states = []
-        start = cycle.run_date or cycle.write_date or cycle.create_date
-        if not start:
-            return 'ok'
-
         for alert in cls.get_matching_alerts(cycle):
+            start = cls.get_alert_start(cycle, alert)
+            if not start:
+                continue
             if alert.type == 'time' and alert.time is not None:
                 delta = datetime.timedelta(minutes=alert.time)
                 if now >= start + delta:
