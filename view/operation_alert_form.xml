@@ -8,6 +8,10 @@
     <field name="product"/>
     <label name="operation"/>
     <field name="operation"/>
+    <label name="model"/>
+    <field name="model"/>
+    <label name="field"/>
+    <field name="field"/>
     <label name="type"/>
     <field name="type"/>
     <label name="time"/>
