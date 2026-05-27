@@ -32,7 +32,7 @@ class OperationAlert(ModelSQL, ModelView):
         ondelete='RESTRICT')
     model = fields.Many2One(
         'ir.model', 'Model', domain=[
-            ('model', 'in', [
+            ('name', 'in', [
                     'production.work.cycle',
                     'production.work',
                     'production',
