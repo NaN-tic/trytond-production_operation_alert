@@ -1,0 +1,130 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:production.operation.alert,field:"
+msgid "Field"
+msgstr "Camp"
+
+msgctxt "field:production.operation.alert,line:"
+msgid "Line"
+msgstr "Línia"
+
+msgctxt "field:production.operation.alert,model:"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "field:production.operation.alert,operation:"
+msgid "Operation"
+msgstr "Operació"
+
+msgctxt "field:production.operation.alert,product:"
+msgid "Product"
+msgstr "Producte"
+
+msgctxt "field:production.operation.alert,state:"
+msgid "State"
+msgstr "Estat"
+
+msgctxt "field:production.operation.alert,time:"
+msgid "Time"
+msgstr "Temps"
+
+msgctxt "field:production.operation.alert,type:"
+msgid "Type"
+msgstr "Tipus"
+
+msgctxt "field:production.operation.alert,work_center:"
+msgid "Work Center"
+msgstr "Centre de treball"
+
+msgctxt "field:production.work,alert_state:"
+msgid "Alert State"
+msgstr "Estat d'alerta"
+
+msgctxt "field:production.work,alerts:"
+msgid "Alerts"
+msgstr "Alertes"
+
+msgctxt "field:production.work.cycle,alert_state:"
+msgid "Alert State"
+msgstr "Estat d'alerta"
+
+msgctxt "field:production.work.cycle,run_date:"
+msgid "Run Date"
+msgstr "Data d'inici"
+
+msgctxt "help:production.operation.alert,field:"
+msgid "Date or datetime field used as the start for the alert calculation."
+msgstr "Camp de data o data i hora usat com a inici per al càlcul de l'alerta."
+
+msgctxt "help:production.operation.alert,model:"
+msgid "Model used to get the date field for the alert calculation."
+msgstr "Model usat per obtenir el camp de data per al càlcul de l'alerta."
+
+msgctxt "help:production.operation.alert,state:"
+msgid "State to set on the work cycle when this alert is triggered."
+msgstr "Estat a establir al cicle de treball quan es dispara aquesta alerta."
+
+msgctxt "help:production.operation.alert,time:"
+msgid "Time in minutes before the alert is triggered."
+msgstr "Temps en minuts abans que es dispari l'alerta."
+
+msgctxt "model:ir.action,name:act_production_operation_alert_list"
+msgid "Operation Alerts"
+msgstr "Alertes d'operació"
+
+msgctxt "model:ir.cron,name:cron_update_work_cycle_alert_state"
+msgid "Update Work Cycle Alert State"
+msgstr "Actualitzar estat d'alerta del cicle de treball"
+
+msgctxt "model:ir.ui.menu,name:menu_production_operation_alert_list"
+msgid "Operation Alerts"
+msgstr "Alertes d'operació"
+
+msgctxt "model:production.operation.alert,name:"
+msgid "Operation Alert"
+msgstr "Alerta d'operació"
+
+msgctxt "selection:ir.cron,method:"
+msgid "Update Work Cycle Alert State"
+msgstr "Actualitzar estat d'alerta del cicle de treball"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "Danger"
+msgstr "Perill"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "OK"
+msgstr "Correcte"
+
+msgctxt "selection:production.operation.alert,state:"
+msgid "Warning"
+msgstr "Avís"
+
+msgctxt "selection:production.operation.alert,type:"
+msgid "Time"
+msgstr "Temps"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "Danger"
+msgstr "Perill"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "OK"
+msgstr "Correcte"
+
+msgctxt "selection:production.work,alert_state:"
+msgid "Warning"
+msgstr "Avís"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "Danger"
+msgstr "Perill"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "OK"
+msgstr "Correcte"
+
+msgctxt "selection:production.work.cycle,alert_state:"
+msgid "Warning"
+msgstr "Avís"
