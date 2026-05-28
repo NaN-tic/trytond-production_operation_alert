@@ -91,7 +91,7 @@ class Work(metaclass=PoolMeta):
         'get_alert_state')
     alerts = fields.Function(
         fields.One2Many('production.operation.alert', None, 'Alerts'),
-        'get_alerts')
+        'get_alerts', setter='set_alerts')
 
     def get_alerts(self, name):
         Alert = Pool().get('production.operation.alert')
@@ -109,6 +109,10 @@ class Work(metaclass=PoolMeta):
                 ('operation', '=', operation.id),
                 ])
         return [a.id for a in alerts]
+
+    @classmethod
+    def set_alerts(cls, works, name, value):
+        pass
 
     def get_alert_state(self, name):
         states = {cycle.alert_state for cycle in self.cycles if cycle.alert_state}
