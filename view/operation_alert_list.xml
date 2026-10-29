@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <tree>
-    <field name="line"/>
-    <field name="work_center"/>
-    <field name="product"/>
+    <field name="name"/>
+    <field name="lines"/>
+    <field name="work_centers"/>
+    <field name="products"/>
     <field name="operation"/>
     <field name="model"/>
     <field name="field"/>
     <field name="type"/>
     <field name="time"/>
+    <field name="time_field"/>
+    <field name="offset_minutes"/>
+    <field name="offset_direction"/>
     <field name="state"/>
 </tree>
