@@ -2,31 +2,29 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 import datetime
+import re
 
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval, If
+from trytond.pyson import Bool, Eval, If
 
 
 class OperationAlert(ModelSQL, ModelView):
     'Operation Alert'
     __name__ = 'production.operation.alert'
 
-    line = fields.Many2One(
-        'production.work.center', 'Line', required=True,
-        domain=[
-            ('category.is_line', '=', True),
-            ],
-        ondelete='RESTRICT')
-    work_center = fields.Many2One(
-        'production.work.center', 'Work Center', required=True,
-        domain=[
-            ('parent', 'child_of', [Eval('line', -1)]),
-            ],
-        depends=['line'],
-        ondelete='RESTRICT')
-    product = fields.Many2One(
-        'product.product', 'Product', required=True, ondelete='CASCADE')
+    name = fields.Char('Name', required=True, translate=True)
+    lines = fields.Many2Many(
+        'production.operation.alert-line', 'alert', 'line', 'Lines',
+        domain=[('category.is_line', '=', True)],
+        help='Leave empty to apply to all lines.')
+    work_centers = fields.Many2Many(
+        'production.operation.alert-work.center', 'alert', 'work_center',
+        'Work Centers',
+        help='Leave empty to apply to all work centers.')
+    products = fields.Many2Many(
+        'production.operation.alert-product.product', 'alert', 'product',
+        'Products', help='Leave empty to apply to all products.')
     operation = fields.Many2One(
         'production.routing.operation', 'Operation', required=True,
         ondelete='RESTRICT')
@@ -54,17 +52,54 @@ class OperationAlert(ModelSQL, ModelView):
             ], 'Type', required=True, sort=False)
     time = fields.Integer(
         'Time', states={
-            'required': Eval('type') == 'time',
-            'invisible': Eval('type') != 'time',
+            'required': (Eval('type') == 'time') & ~Eval('time_field'),
+            'invisible': (Eval('type') != 'time') | Bool(Eval('time_field')),
             },
-        depends=['type'],
+        depends=['type', 'time_field'],
         help='Time in minutes before the alert is triggered.')
+    time_field = fields.Many2One(
+        'ir.model.field', 'Product Time Field',
+        domain=[
+            ('model', 'in', ['product.product', 'product.template']),
+            ('ttype', 'in', [
+                    'integer', 'float', 'numeric', 'timedelta', 'char', 'text']),
+            ],
+        ondelete='RESTRICT',
+        help=('Use this product field instead of the fixed time. Numeric '
+            'values are minutes; duration fields use their own duration. '
+            'Text accepts H:MM or minutes. An empty, invalid or negative '
+            'value does not trigger an alert.'))
+    offset_minutes = fields.Integer(
+        'Margin (minutes)', required=True,
+        domain=[('offset_minutes', '>=', 0)],
+        help='Minutes before or after the configured time to trigger the alert.')
+    offset_direction = fields.Selection([
+            ('before', 'Before'),
+            ('after', 'After'),
+            ], 'When', required=True, sort=False)
     state = fields.Selection([
             ('ok', 'OK'),
             ('warning', 'Warning'),
             ('danger', 'Danger'),
             ], 'State', required=True, sort=False,
         help='State to set on the work cycle when this alert is triggered.')
+
+    @classmethod
+    def __register__(cls, module_name):
+        super().__register__(module_name)
+        table = cls.__table_handler__(module_name)
+        # Removed selectors must not prevent inserting the new rules.
+        for column in ('line', 'work_center', 'product'):
+            if table.column_exist(column):
+                table.not_null_action(column, action='remove')
+
+    @staticmethod
+    def default_offset_minutes():
+        return 0
+
+    @staticmethod
+    def default_offset_direction():
+        return 'after'
 
     @staticmethod
     def default_type():
@@ -76,8 +111,90 @@ class OperationAlert(ModelSQL, ModelView):
 
     @fields.depends('model', 'field')
     def on_change_model(self):
-        if self.field and self.model and self.field.model_ref != self.model:
+        if self.field and self.field.model_ref != self.model:
             self.field = None
+
+    @classmethod
+    def get_matching_alerts(cls, work):
+        if not work or not work.production or not work.operation:
+            return []
+        production = work.production
+        line = production.line or production.work_center
+        domain = [('operation', '=', work.operation.id)]
+        for name, record in [
+                ('lines', line),
+                ('work_centers', work.work_center),
+                ('products', production.product)]:
+            domain.append(['OR', (name, '=', None),
+                    (name, '=', record.id if record else None)])
+        return cls.search(domain)
+
+    def get_time_delta(self, product):
+        value = self.time
+        if self.time_field:
+            if not product:
+                return None
+            record = (product.template
+                if self.time_field.model == 'product.template' else product)
+            value = getattr(record, self.time_field.name, None)
+        if value is None:
+            return None
+        if isinstance(value, str):
+            value = value.strip()
+            if ':' in value:
+                if not re.fullmatch(r'[0-9]+:[0-5][0-9]', value):
+                    return None
+                hours, minutes = value.split(':')
+                value = int(hours) * 60 + int(minutes)
+            else:
+                if not re.fullmatch(r'[0-9]+(?:[.,][0-9]+)?', value):
+                    return None
+                value = value.replace(',', '.')
+        if not isinstance(value, datetime.timedelta):
+            try:
+                value = datetime.timedelta(minutes=float(value))
+            except (ValueError, OverflowError):
+                return None
+        if value < datetime.timedelta():
+            return None
+        offset = datetime.timedelta(minutes=self.offset_minutes or 0)
+        if self.offset_direction == 'before':
+            return value - offset
+        return value + offset
+
+
+class OperationAlertLine(ModelSQL):
+    'Operation Alert - Line'
+    __name__ = 'production.operation.alert-line'
+
+    alert = fields.Many2One(
+        'production.operation.alert', 'Alert', required=True,
+        ondelete='CASCADE')
+    line = fields.Many2One(
+        'production.work.center', 'Line', required=True, ondelete='CASCADE')
+
+
+class OperationAlertWorkCenter(ModelSQL):
+    'Operation Alert - Work Center'
+    __name__ = 'production.operation.alert-work.center'
+
+    alert = fields.Many2One(
+        'production.operation.alert', 'Alert', required=True,
+        ondelete='CASCADE')
+    work_center = fields.Many2One(
+        'production.work.center', 'Work Center', required=True,
+        ondelete='CASCADE')
+
+
+class OperationAlertProduct(ModelSQL):
+    'Operation Alert - Product'
+    __name__ = 'production.operation.alert-product.product'
+
+    alert = fields.Many2One(
+        'production.operation.alert', 'Alert', required=True,
+        ondelete='CASCADE')
+    product = fields.Many2One(
+        'product.product', 'Product', required=True, ondelete='CASCADE')
 
 
 class Work(metaclass=PoolMeta):
@@ -96,19 +213,7 @@ class Work(metaclass=PoolMeta):
     def get_alerts(self, name):
         Alert = Pool().get('production.operation.alert')
 
-        line = self.production.work_center if self.production else None
-        work_center = self.work_center
-        product = self.production.product if self.production else None
-        operation = self.operation
-        if not line or not work_center or not product or not operation:
-            return []
-        alerts = Alert.search([
-                ('line', '=', line.id),
-                ('work_center', '=', work_center.id),
-                ('product', '=', product.id),
-                ('operation', '=', operation.id),
-                ])
-        return [a.id for a in alerts]
+        return [a.id for a in Alert.get_matching_alerts(self)]
 
     @classmethod
     def set_alerts(cls, works, name, value):
@@ -150,31 +255,17 @@ class WorkCycle(metaclass=PoolMeta):
     def default_alert_state():
         return 'ok'
 
-
     @classmethod
     def get_matching_alerts(cls, cycle):
         Alert = Pool().get('production.operation.alert')
 
-        if not cycle.work or not cycle.work.work_center:
-            return []
-        if (not cycle.work.production or not cycle.work.production.product
-                or not cycle.work.production.work_center):
-            return []
-        operation = cycle.work.operation
-        if not operation:
-            return []
-        return Alert.search([
-                ('line', '=', cycle.work.production.work_center.id),
-                ('work_center', '=', cycle.work.work_center.id),
-                ('product', '=', cycle.work.production.product.id),
-                ('operation', '=', operation.id),
-                ])
+        return Alert.get_matching_alerts(cycle.work)
 
     @classmethod
     def get_alert_record(cls, cycle, alert):
         if not alert.model:
             return cycle
-        model_name = alert.model.model
+        model_name = alert.model.name
         if model_name == 'production.work.cycle':
             return cycle
         if model_name == 'production.work':
@@ -209,9 +300,9 @@ class WorkCycle(metaclass=PoolMeta):
             start = cls.get_alert_start(cycle, alert)
             if not start:
                 continue
-            if alert.type == 'time' and alert.time is not None:
-                delta = datetime.timedelta(minutes=alert.time)
-                if now >= start + delta:
+            if alert.type == 'time':
+                delta = alert.get_time_delta(cycle.work.production.product)
+                if delta is not None and now >= start + delta:
                     states.append(alert.state)
         if 'danger' in states:
             return 'danger'

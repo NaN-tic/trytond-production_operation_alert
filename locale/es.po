@@ -5,9 +5,6 @@ msgctxt "field:production.operation.alert,field:"
 msgid "Field"
 msgstr "Campo"
 
-msgctxt "field:production.operation.alert,line:"
-msgid "Line"
-msgstr "Línea"
 
 msgctxt "field:production.operation.alert,model:"
 msgid "Model"
@@ -17,9 +14,6 @@ msgctxt "field:production.operation.alert,operation:"
 msgid "Operation"
 msgstr "Operación"
 
-msgctxt "field:production.operation.alert,product:"
-msgid "Product"
-msgstr "Producto"
 
 msgctxt "field:production.operation.alert,state:"
 msgid "State"
@@ -33,9 +27,6 @@ msgctxt "field:production.operation.alert,type:"
 msgid "Type"
 msgstr "Tipo"
 
-msgctxt "field:production.operation.alert,work_center:"
-msgid "Work Center"
-msgstr "Centro de trabajo"
 
 msgctxt "field:production.work,alert_state:"
 msgid "Alert State"
@@ -128,3 +119,59 @@ msgstr "Correcto"
 msgctxt "selection:production.work.cycle,alert_state:"
 msgid "Warning"
 msgstr "Aviso"
+
+msgctxt "field:production.operation.alert,name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:production.operation.alert,lines:"
+msgid "Lines"
+msgstr "Líneas"
+
+msgctxt "field:production.operation.alert,work_centers:"
+msgid "Work Centers"
+msgstr "Centros de trabajo"
+
+msgctxt "field:production.operation.alert,products:"
+msgid "Products"
+msgstr "Productos"
+
+msgctxt "field:production.operation.alert,time_field:"
+msgid "Product Time Field"
+msgstr "Campo de tiempo del producto"
+
+msgctxt "help:production.operation.alert,lines:"
+msgid "Leave empty to apply to all lines."
+msgstr "Dejar vacío para aplicar a todas las líneas."
+
+msgctxt "help:production.operation.alert,work_centers:"
+msgid "Leave empty to apply to all work centers."
+msgstr "Dejar vacío para aplicar a todos los centros de trabajo."
+
+msgctxt "help:production.operation.alert,products:"
+msgid "Leave empty to apply to all products."
+msgstr "Dejar vacío para aplicar a todos los productos."
+
+msgctxt "help:production.operation.alert,time_field:"
+msgid "Use this product field instead of the fixed time. Numeric values are minutes; duration fields use their own duration. Text accepts H:MM or minutes. An empty, invalid or negative value does not trigger an alert."
+msgstr "Usar este campo del producto en lugar del tiempo fijo. Los valores numéricos son minutos; los campos de duración utilizan su propia duración. El texto admite H:MM o minutos. Un valor vacío, no válido o negativo no activa la alerta."
+
+msgctxt "field:production.operation.alert,offset_minutes:"
+msgid "Margin (minutes)"
+msgstr "Margen (minutos)"
+
+msgctxt "field:production.operation.alert,offset_direction:"
+msgid "When"
+msgstr "Cuándo"
+
+msgctxt "selection:production.operation.alert,offset_direction:"
+msgid "Before"
+msgstr "Antes"
+
+msgctxt "selection:production.operation.alert,offset_direction:"
+msgid "After"
+msgstr "Después"
+
+msgctxt "help:production.operation.alert,offset_minutes:"
+msgid "Minutes before or after the configured time to trigger the alert."
+msgstr "Minutos antes o después del tiempo configurado para activar la alerta."
