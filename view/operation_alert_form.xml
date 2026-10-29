@@ -1,21 +1,35 @@
 <?xml version="1.0"?>
 <form>
-    <label name="line"/>
-    <field name="line"/>
-    <label name="work_center"/>
-    <field name="work_center"/>
-    <label name="product"/>
-    <field name="product"/>
+    <label name="name"/>
+    <field name="name" colspan="3"/>
     <label name="operation"/>
     <field name="operation"/>
+    <label name="state"/>
+    <field name="state"/>
     <label name="model"/>
     <field name="model"/>
     <label name="field"/>
     <field name="field"/>
     <label name="type"/>
     <field name="type"/>
+    <label name="time_field"/>
+    <field name="time_field"/>
     <label name="time"/>
     <field name="time"/>
-    <label name="state"/>
-    <field name="state"/>
+    <newline/>
+    <label name="offset_minutes"/>
+    <field name="offset_minutes"/>
+    <label name="offset_direction"/>
+    <field name="offset_direction"/>
+    <notebook colspan="4">
+        <page name="lines">
+            <field name="lines" colspan="4"/>
+        </page>
+        <page name="work_centers">
+            <field name="work_centers" colspan="4"/>
+        </page>
+        <page name="products">
+            <field name="products" colspan="4"/>
+        </page>
+    </notebook>
 </form>
