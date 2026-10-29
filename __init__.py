@@ -8,6 +8,9 @@ from . import alert
 def register():
     Pool.register(
         alert.OperationAlert,
+        alert.OperationAlertLine,
+        alert.OperationAlertWorkCenter,
+        alert.OperationAlertProduct,
         alert.Work,
         alert.WorkCycle,
         alert.Cron,
